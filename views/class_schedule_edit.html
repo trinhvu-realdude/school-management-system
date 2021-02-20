@@ -1,0 +1,97 @@
+<~header.html~>
+
+<div class="breadcrumbs">
+	<div class="col-sm-4">
+		<div class="page-header float-left">
+			<div class="page-title">
+				<h1>Home</h1>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-8">
+		<div class="page-header float-right">
+			<div class="page-title">
+				<ol class="breadcrumb text-right">
+					<li><a href="#">Home</a></li>
+					<li><a href="#">Forms</a></li>
+					<li class="active">Basic</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="content mt-3">
+	<div class="animated fadeIn">
+		<div style="{msg_style}" class="alert alert-success alert-dismissible fade show" role="alert">
+			<span class="badge badge-pill badge-success">Success</span> You successfully updated this user information.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">×</span>
+			</button>
+		</div>
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="card">
+					<div class="card-header">
+						<strong>Edit</strong> user
+					</div>
+					<div class="card-body card-block">
+						<form id="myForm1" action="/class_schedule_edit_{class_scheduleId}" method="post" class="form-horizontal">
+							<div class="row form-group">
+								<div class="col col-md-3"><label for="text-input" class=" form-control-label">Class name</label></div>
+								<div class="col-12 col-md-9"><input type="text" name="classname" placeholder="Class's name" value="{classname_value}" class="form-control"><small class="form-text text-muted">{classname_err}</small></div>
+							</div>
+							<div class="row form-group">
+								<div class="col col-md-3"><label class=" form-control-label">Room</label></div>
+								<div class="col-12 col-md-9"><input type="text" name="room" placeholder="Room" value="{room_value}" class="form-control"><small class="form-text text-muted">{room_err}</small></div>
+							</div>
+							<div class="row form-group">
+								<div class="col col-md-3"><label class=" form-control-label">Time</label></div>
+								<div class="col-12 col-md-9">
+									<!-- <label for="cars">Choose a car:</label> -->
+									<select class = "selectpicker" name="time" id="Time">
+									  <option value="Morning" name = "Morning">Morning</option>
+									  <option value="Afternoon" name = "Afternoon">Afternoon</option>
+									</select>
+									<!-- <input type="text" name="time" placeholder="Time" value="{time_value}" class="form-control"><small class="form-text text-muted">{time_err}</small> -->
+								</div>
+
+							</div>
+							<div class="row form-group">
+								<div class="col col-md-3"><label class=" form-control-label">Date</label></div>
+								<div class="col-12 col-md-9"><input type="date" name="date" placeholder="Date" value="{date_value}" class="form-control"><small class="form-text text-muted">{date_err}</small></div>
+							</div>
+							<div class="row form-group">
+								<div class="col-12 col-md-3"><label class=" form-control-label">Teacher</label></div>
+								<select class = "selectpicker" name="teacher" id="teacher">
+									{teachername_value}
+								<!-- <div class="col-12 col-md-9"><input type="text" name="teacher" placeholder="Teacher's name" value="{teachername_value}" class="form-control"><small class="form-text text-muted">{teachername_err}</small></div> -->
+							</div>
+						</form>
+					</div>
+					<div class="card-footer">
+						<button id="submitBtn" type="submit" class="btn btn-primary btn-sm">
+							<i class="fa fa-dot-circle-o"></i> Submit
+						</button>
+						<button type="reset" class="btn btn-danger btn-sm">
+							<i class="fa fa-ban"></i> Reset
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><!-- .animated -->
+</div><!-- .content -->
+
+<script>
+	var btn = document.getElementById("submitBtn");
+
+	btn.addEventListener("click", function(){
+		var form = document.getElementById("myForm1");
+		if (form.reportValidity()) {
+			form.submit();
+		}
+	})
+</script>
+
+<~footer.html~>
