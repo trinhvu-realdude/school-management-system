@@ -3,48 +3,58 @@ var MongoClient = require("mongodb").MongoClient
 
 class Common {
 
-	_dbo = null
+    _dbo = null;
 
-	constructor() {
-		var self = this
-		MongoClient.connect("mongodb://localhost:27017/", {useUnifiedTopology: true}, function(err, client) {
-			if (err) throw err
-			self._dbo = client.db("vudangtrinh") // select the database
-			console.log("DB connected!")
-		})
-	}
+    constructor() {
+        var self = this
+        MongoClient.connect("mongodb://localhost:27017/", {
+            useUnifiedTopology: true
+        }, function (err, client) {
+            if (err) 
+                throw err
 
-	getDb() {
-		return this._dbo;
-	}
+            
 
-	randStr(len) {
-		let s = '';
-		while (s.length < len) s += Math.random().toString(36).substr(2, len - s.length)
-		return s
-	}
+            self._dbo = client.db("vudangtrinh") // select the database
+            console.log("DB connected!")
+        })
+    }
 
-	async render(res) {
-		var html = await fs.readFile(res.viewpath, 'utf8')
-		// console.log(res.viewpath)
-		var re = /<~(.+?)~>/g;
-		var m;
+    getDb() {
+        return this._dbo;
+    }
 
-		do {
-			m = re.exec(html);
+    randStr(len) {
+        let s = '';
+        while (s.length < len) 
+            s += Math.random().toString(36).substr(2, len - s.length)
 
-			if (m) {
-				var section = await fs.readFile('./views/sections/' + m[1], 'utf8')
-				html = html.substring(0, m.index) + section + html.substring(m.index + m[0].length)
-			}
-		} while (m);
+        
 
-		const keys = Object.keys(res.parts)
-		keys.forEach(function(item) {
-			html = html.replace("{" + item + "}", res.parts[item])
-		})
-		res.send(html)
-	}
+        return s
+    }
+
+    async render(res) {
+        var html = await fs.readFile(res.viewpath, 'utf8')
+        // console.log(res.viewpath)
+        var re = /<~(.+?)~>/g;
+        var m;
+
+        do {
+            m = re.exec(html);
+
+            if (m) {
+                var section = await fs.readFile('./views/sections/' + m[1], 'utf8')
+                html = html.substring(0, m.index) + section + html.substring(m.index + m[0].length)
+            }
+        } while (m);
+
+        const keys = Object.keys(res.parts)
+        keys.forEach(function (item) {
+            html = html.replace("{" + item + "}", res.parts[item])
+        })
+        res.send(html)
+    }
 }
 
 module.exports = new Common()

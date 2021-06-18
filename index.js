@@ -8,44 +8,47 @@ var authController = require("./controllers/authentication")
 var userController = require("./controllers/user")
 var classController = require("./controllers/class")
 
-app.use(bodyParser.urlencoded({ extended: false })) // enable req.body
+app.use(bodyParser.urlencoded({extended: false})) // enable req.body
 app.use(express.static('public'))
 app.use(cookieParser());
 
 // custom middleware
 app.use(function (req, res, next) {
-	(async function() {
-		if (req.url != '/signin') {
-			res.parts = {avatar: "public/images/admin.jpg"}
-			var uid = req.cookies['login']
-			if (uid != undefined) {
-				
-				var oid = new ObjectId(uid)
-				var query = {"_id": oid}
-				objUser = null
-				try {
-					objUser = await common.getDb().collection("users").findOne(query)
-				} catch (err) {
-					console.log("index.js: error")
-				}
-				if (objUser != null) {
-					req.user = objUser
-					if (objUser["avatar"] != undefined) {
-						res.parts["avatar"] = objUser["avatar"]
+    (async function () {
+        if (req.url != '/signin') {
+            res.parts = {
+                avatar: "public/images/admin.jpg"
+            }
+            var uid = req.cookies['login']
+            if (uid != undefined) {
 
-					}
-				} else {
-					res.redirect(302, "/signin")
-					return
-				}
-			} 
-			// else {
-			// 	res.redirect(302, "/signin")
-			// 	return
-			// }
-		}
-		next()
-	})()
+                var oid = new ObjectId(uid)
+                var query = {
+                    "_id": oid
+                }
+                objUser = null
+                try {
+                    objUser = await common.getDb().collection("users").findOne(query)
+                } catch (err) {
+                    console.log("index.js: error")
+                }
+                if (objUser != null) {
+                    req.user = objUser
+                    if (objUser["avatar"] != undefined) {
+                        res.parts["avatar"] = objUser["avatar"]
+
+                    }
+                } else {
+                    res.redirect(302, "/signin")
+                    return
+                }
+            }
+            // else {
+            // res.redirect(302, "/signin")
+            // return
+            // }
+        }next()
+    })()
 })
 
 app.use(authController)
@@ -54,11 +57,11 @@ app.use(classController)
 
 
 app.get("/", function (req, res) {
-	res.redirect(302, "/signin")
+    res.redirect(302, "/signin")
 })
 
 app.get("/admin", function (req, res) {
-	res.redirect(302, "/user_list")
+    res.redirect(302, "/user_list")
 })
 
 
